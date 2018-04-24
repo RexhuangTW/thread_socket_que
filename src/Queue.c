@@ -12,8 +12,8 @@
 
 //========================================================
 #define	DATA_ARRAY_LENGTH	1024
-#define	QUEUE_RX_MAX_VALUE	1023    	
-#define	QUEUE_TX_MAX_VALUE	1023   
+#define	QUEUE_RX_MAX_VALUE	10    	
+#define	QUEUE_TX_MAX_VALUE	10   
 #define	QUEUE_USED             	1
 #define	QUEUE_NOT_USED         	0
 #define	QUEUE_FULL             	1
@@ -88,17 +88,15 @@ void Queue_RX_Write(char *Data,unsigned short rlen)
 		 
 		 memset(Queue_RX_Table[Queue_RX_Head_Ptr].data,0x00,DATA_ARRAY_LENGTH);
 		 memcpy(Queue_RX_Table[Queue_RX_Head_Ptr].data,Data,strlen(Data));
-		// strcpy(Queue_C2M_Table[Queue_C2M_Head_Ptr].data, Data);
 		 Queue_RX_Table[Queue_RX_Head_Ptr].len=rlen; 
-
-		if(Queue_RX_Head_Ptr >=  QUEUE_RX_MAX_VALUE)
-		   Queue_RX_Head_Ptr=0;  
 
       	     	printf(YELLOW"[RX_DB]:%s, Queue RX data write pointer=%d \n"NONE,Queue_RX_Table[Queue_RX_Head_Ptr].data,Queue_RX_Head_Ptr);
 
 		tcp_received_cnt = 1;
 
 		Queue_RX_Head_Ptr++;
+                if(Queue_RX_Head_Ptr >=  QUEUE_RX_MAX_VALUE)
+                   Queue_RX_Head_Ptr=0;
                        
 		return;
 	} 
@@ -126,7 +124,6 @@ int Queue_RX_Read(unsigned char *Data,unsigned short* rlen)
 	     if(Queue_RX_Table[Queue_RX_Tail_Ptr].Active == 1)
 	     {
 	         Queue_RX_Table[Queue_RX_Tail_Ptr].Active=0;
-
 	         memcpy(Data,Queue_RX_Table[Queue_RX_Tail_Ptr].data,strlen(Queue_RX_Table[Queue_RX_Tail_Ptr].data));
 
 	         *rlen=Queue_RX_Table[Queue_RX_Head_Ptr].len;
@@ -156,14 +153,14 @@ void Queue_TX_Write(char *Data,unsigned short rlen)
 		 memcpy(Queue_TX_Table[Queue_TX_Head_Ptr].data,Data,rlen);
 		 Queue_TX_Table[Queue_TX_Head_Ptr].len=rlen; 
 
-		 if(Queue_TX_Head_Ptr >=  QUEUE_TX_MAX_VALUE)
-		 	Queue_TX_Head_Ptr=0;  
 
       	     	 printf(BRON"[TX_DB]:%s, Queue TX data write pointer=%d \n"NONE,Queue_TX_Table[Queue_TX_Head_Ptr].data,Queue_TX_Head_Ptr);
 
 		 mqtt_received_cnt = 1;
 
 		 Queue_TX_Head_Ptr++;
+                 if(Queue_TX_Head_Ptr >=  QUEUE_TX_MAX_VALUE)
+                        Queue_TX_Head_Ptr=0;
 		 return;
 	} 
 	else 
