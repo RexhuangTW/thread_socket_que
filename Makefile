@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017, Gemtek Corporation
+# Copyright 2016-2017, xxxx Corporation
 # All Rights Reserved.
 # 
 # $Id$
