@@ -149,7 +149,7 @@ void Queue_TX_Write(char *Data,unsigned short rlen)
 	if(Queue_TX_Table[Queue_TX_Head_Ptr].Active == 0)
 	{        
 		 Queue_TX_Table[Queue_TX_Head_Ptr].Active=1;
-		 
+		 memset(Queue_TX_Table[Queue_TX_Head_Ptr].data,0x00,DATA_ARRAY_LENGTH);
 		 memcpy(Queue_TX_Table[Queue_TX_Head_Ptr].data,Data,rlen);
 		 Queue_TX_Table[Queue_TX_Head_Ptr].len=rlen; 
 
